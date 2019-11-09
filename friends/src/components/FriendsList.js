@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utilities/api';
 
 const FriendsList = (props) => {
-  const [friends, setFriends] = useState([]);
+  const [friend, setFriend] = useState({
+    name: '',
+    email: ''
+  })
 
   useEffect(() => {
-    axios
-      .get('http://localstorage:5000/api/friends')
+    api()
+      .get('/api/friends')
       .then(response => {
-        setFriends(response.data)
-        console.log('Res', response.data)
+        setFriend({
+          name: response.data.name,
+          email: response.data.email
+        // console.log('FL Res', response)
+        })
       })
       .catch(error => {
         console.log('Error', error)
       })
-  },[friends])
+  },[])
 
   return (
     <>
-      <h1>My Account</h1>
+      <h1>Friends:</h1>
 
-      <div className='account-name'>Name: {user.name}</div>
-      <div className='account-email'>Email: {user.email}</div> 
+      <div className='friend-name'>Name: {friend.name}</div>
+      <div className='friend-email'>Email: {friend.email}</div> 
     </>
   )
 }
